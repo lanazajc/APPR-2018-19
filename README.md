@@ -5,10 +5,23 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2018/19
 * [![Shiny](http://mybinder.org/badge.svg)](http://beta.mybinder.org/v2/gh/lanazajc/APPR-2018-19/master?urlpath=shiny/APPR-2018-19/projekt.Rmd) Shiny
 * [![RStudio](http://mybinder.org/badge.svg)](http://beta.mybinder.org/v2/gh/lanazajc/APPR-2018-19/master?urlpath=rstudio) RStudio
 
-## Tematika
+# Analiza plač v Sloveniji
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
-Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+Analizirala bom višino povprečne bruto mesečne plače v odvisnosti od gospodarske dejavnosti, izobrazbe ter spola. 
+Zanimal me bo trend spreminjanja višine plače glede na starostno obdobje in višina povprečne plače po regijah po spolu. Podatke bom nato vizualizirala s pomočjo zemljevida. Primerjala bom tudi plače v zasebnem in javnem sektorju glede na izobrazbo. Za konec bom višino povprečne bruto plače v Sloveniji primerjala z drugimi evropskimi državami in pridobljene podatke prikazala z grafom. 
+
+### Tabele: 
+
+1. Povp. bruto mesečna plača glede na gospodarsko dejavnost, izobrazbo in spol. 
+2. Povp. bruto mesečna plača glede na starost. 
+3. Povp. bruto mesečna plača po regija in spolu.
+4. Povp. plače v zasebnem in javnem sektorju glede na izobrazbo in spol. 
+5. Višina povp. bruto plače v državah EU. 
+
+### Viri:
+ 
+* SURS: https://pxweb.stat.si/pxweb/Database/Dem_soc/07_trg_dela/10_place/03_07113_strukt_statistika/03_07113_strukt_statistika.asp
+* Eurostat: http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=earn_nt_net&lang=en
 
 ## Program
 
