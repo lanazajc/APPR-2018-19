@@ -16,7 +16,7 @@ Zanimal me bo trend spreminjanja višine plače glede na starostno obdobje in vi
 2. tabela: Povp. bruto mesečna plača glede na starost. (CSV)
 3. tabela: Povp. bruto mesečna plača po regija in spolu. (CSV)
 4. tabela: Povp. plače v zasebnem in javnem sektorju glede na izobrazbo in spol. (CSV)
-5. tabela: Višina povp. bruto plače v državah EU. (CSV)
+5. tabela: Višina povp. bruto plače v državah EU. (CSV/XLS)
 
 ### Viri:
  
