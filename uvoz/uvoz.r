@@ -18,7 +18,7 @@ place_dejavnost_izobrazba <- read.csv2("dejavnost_izob.csv",
 
 # Uvoz 2. tabela: 
 
-regija_starost <- read.csv2("regija_leto.csv", col.names = c("Statistična regija", "Starost", 2010:2015),skip=3, header = FALSE)
+regija_starost <- read.csv2("regija_leto.csv", col.names = c("Regija", "Starost", 2010:2015),skip=3, header = FALSE)
 
 
 
