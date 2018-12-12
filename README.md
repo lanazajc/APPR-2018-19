@@ -13,10 +13,13 @@ Zanimal me bo trend spreminjanja višine plače glede na starostno obdobje in vi
 ### Tabele: 
 
 1. tabela: Povp. bruto mesečna plača glede na gospodarsko dejavnost, izobrazbo in spol. (CSV)
-2. tabela: Povp. bruto mesečna plača glede na starost. (CSV)
-3. tabela: Povp. bruto mesečna plača po regija in spolu. (CSV)
-4. tabela: Povp. plače v zasebnem in javnem sektorju glede na izobrazbo in spol. (CSV)
-5. tabela: Višina povp. bruto plače v državah EU. (CSV/XLS)
+   Stolpci: Gosp. dejavnost, izobrazba, spol, 2010:2015
+   
+2. tabela: Povp. bruto mesečna plača glede na regijo in starost. (CSV)
+   Stolpci: Statistična regija, starost, 2010:2015
+   
+
+
 
 ### Viri:
  
