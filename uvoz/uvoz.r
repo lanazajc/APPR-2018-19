@@ -18,8 +18,8 @@ place_dejavnost_izobrazba <- read_csv2("podatki/dejavnost_izob.csv",
 #znake ""," " in "-" nadomesti z NA, da lahko v nadaljevanju uporabimo drop_na
 
 place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_na(3) %>%
-  melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa") %>%
-  mutate(Leto=parse_number(Leto))
+  melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa") %>% mutate(Leto=parse_number(Leto))
+  
 
 #fill zapolne prazne vrstice v stolpcu z enako vrednostjo kot v zgornji vrstici, vse do naslednjega polnega polja
 #drop_na izpusti/izbriše vse vrstice kjer imamo NA (argument je stolpce kjer išče NA)
