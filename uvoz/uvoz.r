@@ -18,18 +18,27 @@ place_dejavnost_izobrazba <- read_csv2("podatki/dejavnost_izob.csv",
 #znake ""," " in "-" nadomesti z NA, da lahko v nadaljevanju uporabimo drop_na
 
 place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_na(3) %>%
-  melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa") %>% mutate(Leto=parse_number(Leto))
+  melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa") 
   
 
+# mutate(Leto=parse_number(Leto)) izbrisala ukaz ker ni deloval
 #fill zapolne prazne vrstice v stolpcu z enako vrednostjo kot v zgornji vrstici, vse do naslednjega polnega polja
 #drop_na izpusti/izbriše vse vrstice kjer imamo NA (argument je stolpce kjer išče NA)
-#melt
+#melt spremeni prejšnje stolpce ( 2010:2015 v en stolpec z letom in enim s plačo)
 
 # Uvoz 2. tabela: 
 
-regija_starost <- read.csv2("podatki/regija_leto.csv", col.names = c("Regija", "Starost", 2010:2015),skip=3, header = FALSE)
+stolpci2 <- c("Regija", "Starost", 2010:2015)
 
-regija_starost <- regija_starost %>% fill(1)
+regija_starost <- read.csv2("podatki/regija_leto.csv", col.names = stolpci2,skip=3, 
+                            header = FALSE, na=c(" ", ""))
+
+names(regija_starost)[3:8] <- c("2010", "2011", "2012", "2013", "2014", "2015")
+
+regija_starost <- regija_starost %>% fill(1) %>% drop_na(2) %>% melt(id.vars=stolpci2[1:2], 
+                                variable.name="Leto", value.name = "Placa") 
+  
+ 
 
 
 
@@ -37,10 +46,7 @@ regija_starost <- regija_starost %>% fill(1)
 # Uvoz 3. tabela: 
 
 min_place <- read_html("podatki/minimalne_place.htm") %>% html_node(xpath="//table[@class='infoData']") %>%
-  html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>%
-  mutate(leto=parse_number(leto),
-         placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>%
-  drop_na(placa) 
+  html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>% mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>% drop_na(placa)
 
 
-
+# mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=",")))
