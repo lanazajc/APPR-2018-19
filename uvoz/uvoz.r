@@ -48,5 +48,7 @@ regija_starost <- regija_starost %>% fill(1) %>% drop_na(2) %>% melt(id.vars=sto
 min_place <- read_html("podatki/minimalne_place.htm") %>% html_node(xpath="//table[@class='infoData']") %>%
   html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>% mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>% drop_na(placa)
 
+names(min_place)[1:3] <- c("Drzava", "Leto", "Placa")
+
 
 # mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=",")))
