@@ -52,3 +52,4 @@ names(min_place)[1:3] <- c("Drzava", "Leto", "Placa")
 
 
 # mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=",")))
+
