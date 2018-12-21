@@ -57,4 +57,14 @@ bdp$neki2 <- NULL
 bdp <- bdp[c(2,1,3)]
 bdp <- bdp %>% drop_na(3)
 
+# Risanje grafov
+
+g_min_place <- ggplot(min_place, aes(Leto,Placa)) + geom_bar(stat = "identity", aes(fill = Drzava)) + xlab("Leto") + ylab("Placa") + ggtitle("Minimalna plača po državah") + theme_bw()
+
+#Združila tabeli BDP in min_place po Drzavah
+
+primerjava <- inner_join(min_place, bdp, by=c("Drzava"))
+primerjava$Leto.y <- NULL
+names(primerjava)[2] <- c("Leto")
+
 
