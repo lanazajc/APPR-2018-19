@@ -38,18 +38,23 @@ names(regija_starost)[3:8] <- c("2010", "2011", "2012", "2013", "2014", "2015")
 regija_starost <- regija_starost %>% fill(1) %>% drop_na(2) %>% melt(id.vars=stolpci2[1:2], 
                                 variable.name="Leto", value.name = "Placa") 
   
- 
-
-
-
 
 # Uvoz 3. tabela: 
 
-min_place <- read_html("podatki/minimalne_place.htm") %>% html_node(xpath="//table[@class='infoData']") %>%
-  html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>% mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>% drop_na(placa)
-
+min_place <- read_html("podatki/minimalne_place.htm") %>% html_node(xpath="//table[@class='infoData']") %>% 
+  html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>%
+  mutate(placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>% drop_na(3) 
+  
 names(min_place)[1:3] <- c("Drzava", "Leto", "Placa")
 
 
-# mutate(leto=parse_number(leto),placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=",")))
+# Uvoz 4. tabela: BDP 
+
+stolpci_bdp <- c("Leto", "Drzava", "neki", "neki2", "BDP")
+bdp <- read_csv("podatki/bdp.csv", col_names =stolpci_bdp, skip=1, na=c(":"))
+bdp$neki <- NULL
+bdp$neki2 <- NULL
+bdp <- bdp[c(2,1,3)]
+bdp <- bdp %>% drop_na(3)
+
 
