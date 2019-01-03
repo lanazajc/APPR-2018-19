@@ -59,12 +59,28 @@ bdp <- bdp %>% drop_na(3)
 
 # Risanje grafov
 
-g_min_place <- ggplot(min_place, aes(Leto,Placa)) + geom_bar(stat = "identity", aes(fill = Drzava)) + xlab("Leto") + ylab("Placa") + ggtitle("Minimalna plača po državah") + theme_bw()
-
+g_min_place <- ggplot(min_place, aes(Leto,Placa)) + geom_bar(stat = "identity", aes(fill = Drzava)) + xlab("Leto") + ylab("Placa") + ggtitle("Minimalna plača po državah") 
+print(g_min_place)
 #Združila tabeli BDP in min_place po Drzavah
 
-primerjava <- inner_join(min_place, bdp, by=c("Drzava"))
+min_place$Leto <- parse_integer(min_place$Leto)
+primerjava <- inner_join(min_place, bdp, by=c("Drzava", "Leto"))
 primerjava$Leto.y <- NULL
 names(primerjava)[2] <- c("Leto")
+
+#Nova tabela s podatki o min plačah in bdp v 2004 in 2015 ter razlike za analizo.
+
+l2004 <- primerjava %>% filter(Leto==2004)
+l2004$Leto <- NULL
+names(l2004)[2:3] <- c("Placa v 2004", "BDP v 2004")
+l2015 <- primerjava %>% filter(Leto==2015)
+l2015$Leto <- NULL
+names(l2015)[2:3] <- c("Placa v 2015", "BDP v 2015")
+  
+analiza1 <- inner_join(l2004, l2015, by=c("Drzava"))
+analiza1$Razlika_Place <- analiza1[4]/analiza1[2]
+analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
+names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
+
 
 
