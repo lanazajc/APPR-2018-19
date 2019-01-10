@@ -63,7 +63,7 @@ g_min_place <- ggplot(min_place, aes(Leto,Placa)) + geom_bar(stat = "identity", 
 print(g_min_place)
 #Združila tabeli BDP in min_place po Drzavah
 
-min_place$Leto <- parse_integer(min_place$Leto)
+min_place$Leto <- parse_integer(as.character(min_place$Leto))
 primerjava <- inner_join(min_place, bdp, by=c("Drzava", "Leto"))
 primerjava$Leto.y <- NULL
 names(primerjava)[2] <- c("Leto")
@@ -76,11 +76,35 @@ names(l2004)[2:3] <- c("Placa v 2004", "BDP v 2004")
 l2015 <- primerjava %>% filter(Leto==2015)
 l2015$Leto <- NULL
 names(l2015)[2:3] <- c("Placa v 2015", "BDP v 2015")
-  
-analiza1 <- inner_join(l2004, l2015, by=c("Drzava"))
-analiza1$Razlika_Place <- analiza1[4]/analiza1[2]
-analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
-names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
 
+#Tabela s podatki razlike v plači in BDP 2004, 2015:
+  
+analiza1 <- inner_join(l2004, l2015, by=c("Drzava")) 
+analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.name =('Vrednost')) %>%
+  separate(Placa, c("Namen", "Leto"), " v ") %>% mutate(Leto=parse_number(as.character(Leto)))
+#analiza1 <- analiza1[order(analiza1$Drzava),]
+
+  
+#g_analiza1 <- ggplot(analiza1, aes(Drzava, Vrednost)) + geom_bar(stat = "identity") + xlab("Podatki") + ylab("Vrednost")
+#print(g_analiza1)
+
+visina <- table(analiza1$Placa, analiza1$Placa)
+lala <- analiza1 %>% group_by(Placa)
+
+g_sprememba_plac <- barplot(visina, main="Višina plač v 2004 in  2015 po državah",
+                            xlab="Država", col=c("darkblue","red"),
+                            legend = rownames(visina), beside=TRUE)
+
+#analiza1$Leto <- gsub("\\D", "", analiza1$Placa)
+#analiza1$Namen <- gsub("\\s.*", "", analiza1$Placa)
+#analiza1$Placa <- NULL
+gr <- analiza1 %>% filter(Namen == "Placa" )
+
+#analiza1$Razlika_Place <- ((analiza1[4]-analiza1[2])*100)/analiza1[2]
+#analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
+#names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
+
+ggplot(gr, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
+  guides(fill=guide_legend("Leto")) + xlab("Država")
 
 
