@@ -16,7 +16,6 @@ place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_n
 #skip 4 - izpusti prve 4 vrstice
 #znake ""," " in "-" nadomesti z NA, da lahko v nadaljevanju uporabimo drop_na
 
-# mutate(Leto=parse_number(Leto)) izbrisala ukaz ker ni deloval
 #fill zapolne prazne vrstice v stolpcu z enako vrednostjo kot v zgornji vrstici, vse do naslednjega polnega polja
 #drop_na izpusti/izbriše vse vrstice kjer imamo NA (argument je stolpce kjer išče NA)
 #melt spremeni prejšnje stolpce ( 2010:2015 v en stolpec z letom in enim s plačo)
@@ -82,6 +81,8 @@ analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.n
   separate(Placa, c("Namen", "Leto"), " v ") %>% mutate(Leto=parse_number(as.character(Leto)))
 
 
+
+razlika_plac <- razlika_plac[!(razlika_plac$Drzava=="United States"), ]
 #analiza1 <- analiza1[order(analiza1$Drzava),]
 #g_analiza1 <- ggplot(analiza1, aes(Drzava, Vrednost)) + geom_bar(stat = "identity") + xlab("Podatki") + ylab("Vrednost")
 #print(g_analiza1)
@@ -90,6 +91,14 @@ analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.n
 graf_place <- analiza1 %>% filter(Namen == "Placa" )
 graf_bdp <- analiza1 %>% filter(Namen == "BDP") %>% mutate(Vrednost=parse_number(as.character(Vrednost)))
 
+graf_dej15 <- place_dejavnost_izobrazba %>% filter(Leto == 2015)
+graf_dej15$Leto <- NULL
+
+
+
+
+  
+  
 #analiza1$Razlika_Place <- ((analiza1[4]-analiza1[2])*100)/analiza1[2]
 #analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
 #names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
@@ -98,7 +107,8 @@ graf_bdp <- analiza1 %>% filter(Namen == "BDP") %>% mutate(Vrednost=parse_number
 # RISANJE GRAFOV: RAZLIKA V BDP IN PLAČI V 2004 IN 2015
 
 ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
-  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plaže za leto 2004 in 2015 po državah")
+  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
 
 ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
+
