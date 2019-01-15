@@ -23,11 +23,11 @@ source("lib/libraries.r", encoding="UTF-8")
 source("lib/rstudio.r", encoding="UTF-8")
 ```
 
-# Izbira teme
+# Analiza plač v Sloveniji in po Evropi
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 
-![](slike/grb.png)
+
+![](slike/payday.jpg)
 
 ***
 
@@ -37,13 +37,15 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Uvozila smo podatke o povprečnih plačah po dejavnostih, izobrazbi in spolu, ter podatke o plačah po regijah in starosti v obliki CSV s statističnega urada Slovenije. V obliki HTML sem uvozila podatke o minimalnih plačah po državah Evrope z Eurostata. Nato sem za potrebe analiz še dodatno uvozila podatke o BDP-ju držav Evrope, v CSV obliki, tudi z Eurostata. 
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
+Podatke imamo v 4 razpredelnicah v obliki *tidy data*.
+
+1. `Dejavnost` - spremenljivka: tip dejavnosti
+  - `Izobrazba` - spremenljivka: Osnovnošolska ali manj, srednješolska, višješolska ali visokošolska
+  - `Spol` - spremenljivka: Moški, Ženska
+  - `Leto` - spremenljivka: 2010 od 2015
+  - `Plača` - meritev: Povprečna plača
 
 2. `obcine` - podatki o občinah
   - `obcina` - spremenljivka: ime občine (neurejen faktor),
