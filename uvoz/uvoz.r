@@ -1,6 +1,7 @@
 
 # UVOZ 1. TABELE: plače glede gospodarsko dejavnost
 
+
 stolpci <- c("Dejavnost", "Izobrazba", "Spol", 2010:2015)
 
 place_dejavnost_izobrazba <- read_csv2("podatki/dejavnost_izob.csv", 
@@ -111,4 +112,10 @@ ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(posi
 
 ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
+
+
+# ZEMLJEVID REGIJ SLOVENIJE
+
+zemljevid_regij <- uvozi.zemljevid("https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_SVN_gpkg.zip", mapa = "zemljevidi", pot.zemljevida ="",
+                                   encoding="Windows-1250")
 
