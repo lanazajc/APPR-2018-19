@@ -96,9 +96,6 @@ graf_dej15 <- place_dejavnost_izobrazba %>% filter(Leto == 2015)
 graf_dej15$Leto <- NULL
 
 
-
-
-  
   
 #analiza1$Razlika_Place <- ((analiza1[4]-analiza1[2])*100)/analiza1[2]
 #analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
@@ -112,10 +109,4 @@ ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(posi
 
 ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
-
-
-# ZEMLJEVID REGIJ SLOVENIJE
-
-zemljevid_regij <- uvozi.zemljevid("https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_SVN_gpkg.zip", mapa = "zemljevidi", pot.zemljevida ="",
-                                   encoding="Windows-1250")
 
