@@ -33,7 +33,7 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # Obdelava, uvoz in čiščenje podatkov
 
-```{r uvoz, echo=FALSE, message=FALSE}
+```{r uvoz, echo=FALSE, message=FALSE, warning=FALSE}
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
@@ -42,7 +42,7 @@ Uvozila sem podatke o povprečnih plačah po dejavnostih, izobrazbi in spolu, te
 Podatke imam v 4 razpredelnicah v obliki *tidy data*.
 
 1. Povprečna plača po dejavnosti, izobrazbi in spolu
-  -`Dejavnost` - spremenljivka: tip dejavnosti
+  - `Dejavnost` - spremenljivka: tip dejavnosti
   - `Izobrazba` - spremenljivka: Osnovnošolska ali manj, srednješolska, višješolska ali visokošolska
   - `Spol` - spremenljivka: Moški, Ženska
   - `Leto` - spremenljivka: 2010 od 2015
@@ -64,7 +64,7 @@ Podatke imam v 4 razpredelnicah v obliki *tidy data*.
   - `Leto` - spremenljivka: 2004-2015
   - `BDP` - meritev: BDP
 
-Iz zgoraj omenjenih tabel sem nato kombinirala podatke, in iz njih izpeljala tabele, ki so osnova za spodnja grafa: 
+Iz zgoraj omenjenih tabel sem nato kombinirala podatke in iz njih izpeljala tabele, ki so osnova za spodnja grafa: 
 
 
 Prvi graf prikazuje višino minimalne plače po državah Evrope za leto 2004 in 2015
@@ -92,17 +92,9 @@ source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 
 Uvozila sem tudi zemljevid Slovenije, ki zaenkrat vsebuje le obarvane regije. Vsako regijo bom obarvala glede na višino povprečne plače v 2014 in analizirala v katerih regijah so plače najvišje in kje najnižje. 
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-zemljevid_slovenije <- uvozi.zemljevid("http://biogeo.ucdavis.edu/data/gadm2.8/shp/SVN_adm_shp.zip",
-                                       "SVN_adm1", mapa = "zemljevid_Slovenije", encoding = "Windows-1250") %>% fortify()
-
-ggplot() + geom_polygon(data=zemljevid_slovenije, aes(x=long, y=lat, group=group, fill=id)) +
-  guides(fill=FALSE) + labs(title ="Regije Slovenije")
-```
-
-
 V nadaljevanju bom analizirala spremembe v višini plače med letom 2004 in 2015 za države Evrope v povezavi z rastjo BDP posamezne države. 
 Grafično bom prikazala podatke o povprečnih plačah v posamezni dejavnosti ter razlike med plačo moških in žensk v le-teh. 
+
 ***
 
 # Napredna analiza podatkov
