@@ -66,7 +66,6 @@ Podatke imam v 4 razpredelnicah v obliki *tidy data*.
 
 Iz zgoraj omenjenih tabel sem nato kombinirala podatke, in iz njih izpeljala tabele, ki so osnova za spodnja grafa: 
 
-**Opomba**: 
 
 Prvi graf prikazuje višino minimalne plače po državah Evrope za leto 2004 in 2015
 
@@ -108,14 +107,7 @@ Grafično bom prikazala podatke o povprečnih plačah v posamezni dejavnosti ter
 
 # Napredna analiza podatkov
 
-```
-```
-
-```
-
-```
 
 ***
 
-```
-```
+
