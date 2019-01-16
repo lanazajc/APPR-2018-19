@@ -37,34 +37,50 @@ source("lib/rstudio.r", encoding="UTF-8")
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-Uvozila smo podatke o povprečnih plačah po dejavnostih, izobrazbi in spolu, ter podatke o plačah po regijah in starosti v obliki CSV s statističnega urada Slovenije. V obliki HTML sem uvozila podatke o minimalnih plačah po državah Evrope z Eurostata. Nato sem za potrebe analiz še dodatno uvozila podatke o BDP-ju držav Evrope, v CSV obliki, tudi z Eurostata. 
+Uvozila sem podatke o povprečnih plačah po dejavnostih, izobrazbi in spolu, ter podatke o plačah po regijah in starosti v obliki CSV s statističnega urada Slovenije. V obliki HTML sem uvozila podatke o minimalnih plačah po državah Evrope z Eurostata. Nato sem za potrebe analiz še dodatno uvozila podatke o BDP-ju držav Evrope, v CSV obliki, tudi z Eurostata. 
 
-Podatke imamo v 4 razpredelnicah v obliki *tidy data*.
+Podatke imam v 4 razpredelnicah v obliki *tidy data*.
 
-1. `Dejavnost` - spremenljivka: tip dejavnosti
+1. Povprečna plača po dejavnosti, izobrazbi in spolu
+  -`Dejavnost` - spremenljivka: tip dejavnosti
   - `Izobrazba` - spremenljivka: Osnovnošolska ali manj, srednješolska, višješolska ali visokošolska
   - `Spol` - spremenljivka: Moški, Ženska
   - `Leto` - spremenljivka: 2010 od 2015
   - `Plača` - meritev: Povprečna plača
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+2. Povprečna plača po regijah in starosti
+  - `Regija` - spremenljivka: Regije
+  - `Starost` - spremenljivka: 
+  - `Leto` - spremenljivka: 2010-2014
+  - `Plača` - meritev: Povprečna plača,
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
+3. Minimalne plače po državah Evrope
+  - `Država` - spremenljivka: Države
+  - `Leto` - spremenljivka: 2004-2015
+  - `Plača` - meritev: Minimalna plača
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
+4. BDP držav Evrope
+  - `Država` - spremenljivka: Države
+  - `Leto` - spremenljivka: 2004-2015
+  - `BDP` - meritev: BDP
+
+Iz zgoraj omenjenih tabel sem nato kombinirala podatke, in iz njih izpeljala tabele, ki so osnova za spodnja grafa: 
+
+**Opomba**: 
+
+Prvi graf prikazuje višino minimalne plače po državah Evrope za leto 2004 in 2015
 
 ```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x=naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
+ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
+  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
+```
+
+
+Drugi graf prikazuje vrednosti BDP za posamezne države leta 2004 in 2015
+```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
+ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
+  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
+
 ```
 
 ***
@@ -75,13 +91,14 @@ ggplot(obcine, aes(x=naselja)) + geom_histogram() +
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
+Uvozila sem tudi zemljevid Slovenije, ki zaenkrat vsebuje le obarvane regije. Vsako regijo bom obarvala glede na višino povprečne plače v 2014 in analizirala v katerih regijah so plače najvišje in kje najnižje. 
 
 ```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-ggplot() + geom_polygon(data=left_join(zemljevid, povprecja, by=c("OB_UIME"="obcina")),
-                        aes(x=long, y=lat, group=group, fill=povprecje)) +
-  ggtitle("Povprečno število otrok v družini") + xlab("") + ylab("") +
-  guides(fill=guide_colorbar(title="Povprečje"))
+zemljevid_slovenije <- uvozi.zemljevid("http://biogeo.ucdavis.edu/data/gadm2.8/shp/SVN_adm_shp.zip",
+                                       "SVN_adm1", mapa = "zemljevid_Slovenije", encoding = "Windows-1250") %>% fortify()
+
+ggplot() + geom_polygon(data=zemljevid_slovenije, aes(x=long, y=lat, group=group, fill=id)) +
+  guides(fill=FALSE) + labs(title ="Regije Slovenije")
 ```
 
 ***
@@ -91,17 +108,11 @@ ggplot() + geom_polygon(data=left_join(zemljevid, povprecja, by=c("OB_UIME"="obc
 ```{r analiza, echo=FALSE, message=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
 ```
-
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
+V nadaljevanju bom analizirala spremembe v višini plače med letom 2004 in 2015 za države Evrope v povezavi z rastjo BDP posamezne države. 
+Grafično bom prikazala podatke o povprečnih plačah v posamezni dejavnosti ter razlike med plačo moških in žensk v le-teh. 
 
 ```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina=names(skupine),
-                                     skupina=factor(skupine)), by="obcina")
-, aes(x=povrsina, y=naselja, color=skupina, size=prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color=guide_legend(title="Skupina"),
-         size=guide_legend(title="Prebivalci (* 1000)"))
+
 ```
 
 ***
