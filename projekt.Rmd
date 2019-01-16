@@ -70,14 +70,14 @@ Iz zgoraj omenjenih tabel sem nato kombinirala podatke, in iz njih izpeljala tab
 
 Prvi graf prikazuje višino minimalne plače po državah Evrope za leto 2004 in 2015
 
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
+```{r graf_place, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
 ```
 
 
 Drugi graf prikazuje vrednosti BDP za posamezne države leta 2004 in 2015
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
+```{r graf_bdp, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
 
@@ -101,22 +101,21 @@ ggplot() + geom_polygon(data=zemljevid_slovenije, aes(x=long, y=lat, group=group
   guides(fill=FALSE) + labs(title ="Regije Slovenije")
 ```
 
+
+V nadaljevanju bom analizirala spremembe v višini plače med letom 2004 in 2015 za države Evrope v povezavi z rastjo BDP posamezne države. 
+Grafično bom prikazala podatke o povprečnih plačah v posamezni dejavnosti ter razlike med plačo moških in žensk v le-teh. 
 ***
 
 # Napredna analiza podatkov
 
-```{r analiza, echo=FALSE, message=FALSE}
-source("analiza/analiza.r", encoding="UTF-8")
 ```
-V nadaljevanju bom analizirala spremembe v višini plače med letom 2004 in 2015 za države Evrope v povezavi z rastjo BDP posamezne države. 
-Grafično bom prikazala podatke o povprečnih plačah v posamezni dejavnosti ter razlike med plačo moških in žensk v le-teh. 
+```
 
-```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
+```
 
 ```
 
 ***
 
-```{r shiny, echo=FALSE}
-shinyAppDir("shiny", options=list(width="100%", height=600))
+```
 ```

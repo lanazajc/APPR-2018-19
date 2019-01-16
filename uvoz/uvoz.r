@@ -83,7 +83,7 @@ analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.n
 
 
 
-razlika_plac <- razlika_plac[!(razlika_plac$Drzava=="United States"), ]
+#razlika_plac <- razlika_plac[!(razlika_plac$Drzava=="United States"), ]
 #analiza1 <- analiza1[order(analiza1$Drzava),]
 #g_analiza1 <- ggplot(analiza1, aes(Drzava, Vrednost)) + geom_bar(stat = "identity") + xlab("Podatki") + ylab("Vrednost")
 #print(g_analiza1)
