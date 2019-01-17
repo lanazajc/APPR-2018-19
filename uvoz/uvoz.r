@@ -25,17 +25,19 @@ place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_n
 
 stolpci2 <- c("Regija", "Starost", 2010:2015)
 
-regija_starost <- read.csv2("podatki/regija_leto.csv", col.names = stolpci2,skip=3, 
-                            header = FALSE, na=c(" ", ""))
+regija_starost <- read_csv2("podatki/regija_leto.csv", col_names = stolpci2, skip=3,
+                            n_max=96, na=c(" ", "", "z"), locale=locale(encoding="Windows-1250"))
 
-names(regija_starost)[3:8] <- c("2010", "2011", "2012", "2013", "2014", "2015")
+#names(regija_starost)[3:8] <- c("2010", "2011", "2012", "2013", "2014", "2015")
 
 regija_starost <- regija_starost %>% fill(1) %>% drop_na(2) %>% melt(id.vars=stolpci2[1:2], 
-                  variable.name="Leto", value.name = "Placa") 
-regija_starost <- regija_starost[!(regija_starost$Starost=="65 let ali več"), ]
-regija_starost <- regija_starost[!(regija_starost$Leto==2015), ]
+                  variable.name="Leto", value.name = "Placa", na.rm = TRUE) %>%
+  mutate(Leto=parse_number(as.character(Leto)))
+#regija_starost <- regija_starost[!(regija_starost$Starost=="65 let ali več"), ]
+#regija_starost <- regija_starost[!(regija_starost$Leto==2015), ]
 
-povp_starost <- regija_starost %>% filter(Starost=="15-64 let")
+povp_starost <- regija_starost %>% filter(Starost=="15-64 let") %>% select(-Starost)
+regija_starost <- regija_starost[!(regija_starost$Starost=="15-64 let"), ]
 
 sprememba <- povp_starost %>% filter(Leto==2010 | Leto==2014)
 
