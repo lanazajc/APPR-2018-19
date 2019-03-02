@@ -47,10 +47,16 @@ ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprem
 # GRAF plač po dejavnostih in spolu
 
 ggplot(place_dejavnosti %>% filter(Leto == 2016), aes(x=Dejavnost, y=Plača, fill=factor(Spol))) + geom_col(position = "dodge") + 
-  guides(fill=guide_legend("Spol")) + coord_flip()
+  guides(fill=guide_legend("Spol")) + coord_flip() + ggtitle("Plače po dejavnostih in spolu v letu 2016")
 
 
+#Opazimo: plače najvišje v finančnih in zavarovalniških dejavnostih, 
+# najnižje v Gostinstvu, zato še analiza vpliva izobrazbe na plačo v teh dejavnostih po spolu:
 
+#Fin:
+
+ggplot(place_fin, aes(x=Izobrazba, y=Placa, color=Spol))+ geom_point(aes(x=Izobrazba, y=Placa)) + guides(fill=guide_legend("Spol")) + 
+  geom_line()
 
 
 

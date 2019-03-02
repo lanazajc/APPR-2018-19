@@ -23,6 +23,9 @@ place_dejavnosti$Izobrazba <- NULL
 place_dejavnosti <- place_dejavnosti %>% fill(1:3) %>% drop_na(4)
 
 
+place_gos <- place_dejavnost_izobrazba %>% filter(Dejavnost =="K FINANČNE IN ZAVAROVALNIŠKE DEJAVNOSTI" , Leto == 2015)
+place_fin <- place_gos
+
 # podatki/ pred imenom datoteke, ker mamo za directory nastavljen na glavno mapo
 #col_names nastavimo imena stolpcev
 #skip 4 - izpusti prve 4 vrstice
@@ -120,6 +123,7 @@ graf_dej15$Leto <- NULL
   
 #analiza1$Razlika_Place <- ((analiza1[4]-analiza1[2])*100)/analiza1[2]
 #analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
+
 #names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
 
 
