@@ -83,6 +83,11 @@ analiza1 <- analiza1[!(analiza1$Drzava=="United States"), ]
 analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.name =('Vrednost')) %>%
   separate(Placa, c("Namen", "Leto"), " v ") %>% mutate(Leto=parse_number(as.character(Leto)))
 
+razlika_plac$'Sprememba v %' = (razlika_plac$`Placa v 2015` - razlika_plac$`Placa v 2004`)/razlika_plac$`Placa v 2004` *100
+razlika_plac$Sprememba <- NULL
+names(razlika_plac)[6] <- c("Sprememba plače v %")
+razlika_plac$"Sprememba BDP v %" = (razlika_plac$`BDP v 2015` - razlika_plac$`BDP v 2004`)/razlika_plac$`BDP v 2004` *100
+razlika_plac$`Sprememba v %` <- NULL
 
 
 #razlika_plac <- razlika_plac[!(razlika_plac$Drzava=="United States"), ]
@@ -92,6 +97,9 @@ analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.n
 
 
 graf_place <- analiza1 %>% filter(Namen == "Placa" )
+#graf_place <- arrange(graf_place, graf_place$Vrednost)
+
+
 graf_bdp <- analiza1 %>% filter(Namen == "BDP") %>% mutate(Vrednost=parse_number(as.character(Vrednost)))
 
 graf_dej15 <- place_dejavnost_izobrazba %>% filter(Leto == 2015)
@@ -106,9 +114,24 @@ graf_dej15$Leto <- NULL
 
 # RISANJE GRAFOV: RAZLIKA V BDP IN PLAČI V 2004 IN 2015
 
-ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
+ggplot(graf_place,aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge")  + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
 
 ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
+
+# Graf razlike v spremembi plač in BDP
+graf_sprememb <- razlika_plac[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="Sprememba", value.name = "Odstotek")
+  
+ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprememba)) +
+          guides(fill=guide_legend("Sprememba")) + coord_flip() +
+  geom_point(show.legend= FALSE)
+
+ 
+
+  
+
+# geom_bar() + coord_flip() + ylab("Sprememba v %") +
+   #xlab("Država") + ggtitle("Sprememba plač in BDP v %")
+  
 

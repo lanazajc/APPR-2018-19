@@ -26,3 +26,4 @@ ggplot(zemljevid.place, aes(x=long, y=lat, fill=Placa, label=paste0(NAME_1, "\n"
   geom_polygon(aes(group=group)) +
   geom_text(data=zemljevid.place %>% group_by(NAME_1, Placa) %>% summarise(long=mean(long), lat=mean(lat))) +
   labs(title ="Regije Slovenije")
+
