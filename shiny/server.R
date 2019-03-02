@@ -1,24 +1,18 @@
 library(shiny)
 
-shinyServer(function(input, output) {
-  output$druzine <- DT::renderDataTable({
-    dcast(druzine, obcina ~ velikost.druzine, value.var="stevilo.druzin") %>%
-      rename(`Občina`=obcina)
+function(input, output) {
+  
+  output$dejavnosti <- renderPlot({
+    graf_dejavnosti <- ggplot(place_dejavnosti %>% filter(Leto == input$Leto)) + aes(x=Dejavnost, y=Plača, color=Spol) +
+      geom_col(position = "dodge") + guides(fill=guide_legend("Leto")) +
+      labs(title = "Plače po dejavnosti in spolu") + theme(plot.title = element_text(hjust = 0.5)) +
+      ylab("Plača") + xlab("Dejavnosti")
+    print(graf_dejavnosti)
   })
   
-  output$pokrajine <- renderUI(
-    selectInput("pokrajina", label="Izberi pokrajino",
-                choices=c("Vse", levels(obcine$pokrajina)))
-  )
-  output$naselja <- renderPlot({
-    main <- "Pogostost števila naselij"
-    if (!is.null(input$pokrajina) && input$pokrajina %in% levels(obcine$pokrajina)) {
-      t <- obcine %>% filter(pokrajina == input$pokrajina)
-      main <- paste(main, "v regiji", input$pokrajina)
-    } else {
-      t <- obcine
-    }
-    ggplot(t, aes(x=naselja)) + geom_histogram() +
-      ggtitle(main) + xlab("Število naselij") + ylab("Število občin")
-  })
-})
+ 
+  
+  
+  
+}
+
