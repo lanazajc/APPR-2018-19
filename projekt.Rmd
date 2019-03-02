@@ -90,6 +90,10 @@ ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(positi
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
+```{r map, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+```
+
 Uvozila sem tudi zemljevid Slovenije, ki zaenkrat vsebuje le obarvane regije. Vsako regijo bom obarvala glede na višino povprečne plače v 2014 in analizirala v katerih regijah so plače najvišje in kje najnižje. 
 
 V nadaljevanju bom analizirala spremembe v višini plače med letom 2004 in 2015 za države Evrope v povezavi z rastjo BDP posamezne države. 
