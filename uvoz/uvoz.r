@@ -10,7 +10,18 @@ place_dejavnost_izobrazba <- read_csv2("podatki/dejavnost_izob.csv",
                                        locale=locale(encoding="Windows-1250"))
 
 place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_na(3) %>%
-  melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa") 
+  melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa")
+  
+  
+#mutate(Placa=parse_number(as.character(Placa))) %>% group_by(Dejavnost) 
+# summarise(Povprečje=sum(Placa, na.rm = TRUE))
+
+stolpci_d <- c("Spol", "Leto", "Dejavnost", "Izobrazba", "Plača")
+place_dejavnosti <- read_csv2("podatki/place_dejavnosti.csv", col_names = stolpci_d, 
+                              skip = 2, locale = locale(encoding = "Windows-1250"), na=c("-", "", " "))
+place_dejavnosti$Izobrazba <- NULL
+place_dejavnosti <- place_dejavnosti %>% fill(1:3) %>% drop_na(4)
+
 
 # podatki/ pred imenom datoteke, ker mamo za directory nastavljen na glavno mapo
 #col_names nastavimo imena stolpcev
@@ -112,26 +123,6 @@ graf_dej15$Leto <- NULL
 #names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
 
 
-# RISANJE GRAFOV: RAZLIKA V BDP IN PLAČI V 2004 IN 2015
 
-ggplot(graf_place,aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge")  + coord_flip() +
-  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
 
-ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
-  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
-
-# Graf razlike v spremembi plač in BDP
-graf_sprememb <- razlika_plac[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="Sprememba", value.name = "Odstotek")
-  
-ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprememba)) +
-          guides(fill=guide_legend("Sprememba")) + coord_flip() +
-  geom_point(show.legend= FALSE)
-
- 
-
-  
-
-# geom_bar() + coord_flip() + ylab("Sprememba v %") +
-   #xlab("Država") + ggtitle("Sprememba plač in BDP v %")
-  
 

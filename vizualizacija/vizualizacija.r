@@ -27,3 +27,33 @@ ggplot(zemljevid.place, aes(x=long, y=lat, fill=Placa, label=paste0(NAME_1, "\n"
   geom_text(data=zemljevid.place %>% group_by(NAME_1, Placa) %>% summarise(long=mean(long), lat=mean(lat))) +
   labs(title ="Regije Slovenije")
 
+
+# RISANJE GRAFOV: RAZLIKA V BDP IN PLAČI V 2004 IN 2015
+
+ggplot(graf_place,aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge")  + coord_flip() +
+  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
+
+ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
+  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
+
+# Graf razlike v spremembi plač in BDP
+graf_sprememb <- razlika_plac[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="Sprememba", value.name = "Odstotek")
+
+ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprememba)) +
+  guides(fill=guide_legend("Sprememba")) + coord_flip() + ggtitle("Sprememba plač in BDP med letoma 2004 in 2015") +
+  geom_point(show.legend=TRUE)
+
+
+# GRAF plač po dejavnostih in spolu
+
+ggplot(place_dejavnosti %>% filter(Leto == 2016), aes(x=Dejavnost, y=Plača, fill=factor(Spol))) + geom_col(position = "dodge") + 
+  guides(fill=guide_legend("Spol")) + coord_flip()
+
+
+
+
+
+
+
+
+
