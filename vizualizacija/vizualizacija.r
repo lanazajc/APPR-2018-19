@@ -22,41 +22,37 @@ visina.place$Regija[visina.place$Regija == "Primorsko-notranjska"] <- "Notranjsk
 
 zemljevid.place <- zemljevid_slovenije %>% left_join(visina.place, by=c("NAME_1"="Regija"))
 
-ggplot(zemljevid.place, aes(x=long, y=lat, fill=Placa, label=paste0(NAME_1, "\n", Placa))) +
+map <- ggplot(zemljevid.place, aes(x=long, y=lat, fill=Placa, label=paste0(NAME_1, "\n", Placa))) +
   geom_polygon(aes(group=group)) +
   geom_text(data=zemljevid.place %>% group_by(NAME_1, Placa) %>% summarise(long=mean(long), lat=mean(lat))) +
-  labs(title ="Regije Slovenije")
+  labs(title ="Višina povp. bruto plače po regijah Slovenije")
+print(map)
+
+# RISANJE GRAFOV: RAZLIKA V BDP IN MIN. PLAČI V 2004 IN 2015
+
+graf1 <- ggplot(graf_place,aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge")  + coord_flip() +
+  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Min. plače za leto 2004 in 2015 po državah")
 
 
-# RISANJE GRAFOV: RAZLIKA V BDP IN PLAČI V 2004 IN 2015
-
-ggplot(graf_place,aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge")  + coord_flip() +
-  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
-
-ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
+graf2 <- ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
   guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
 
-# Graf razlike v spremembi plač in BDP
+
+# Graf razlike v spremembi min. plač in BDP
 graf_sprememb <- razlika_plac[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="Sprememba", value.name = "Odstotek")
 
-ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprememba)) +
-  guides(fill=guide_legend("Sprememba")) + coord_flip() + ggtitle("Sprememba plač in BDP med letoma 2004 in 2015") +
+graf3 <- ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprememba)) +
+  guides(fill=guide_legend("Sprememba")) + coord_flip() + ggtitle("Sprememba min. plač in BDP med letoma 2004 in 2015") +
   geom_point(show.legend=TRUE)
 
 
 # GRAF plač po dejavnostih in spolu
 
-ggplot(place_dejavnosti %>% filter(Leto == 2016), aes(x=Dejavnost, y=Plača, fill=factor(Spol))) + geom_col(position = "dodge") + 
+graf4 <- ggplot(place_dejavnosti %>% filter(Leto == 2016), aes(x=Dejavnost, y=Plača, fill=factor(Spol))) + geom_col(position = "dodge") + 
   guides(fill=guide_legend("Spol")) + coord_flip() + ggtitle("Plače po dejavnostih in spolu v letu 2016")
+print(graf4)
 
 
-#Opazimo: plače najvišje v finančnih in zavarovalniških dejavnostih, 
-# najnižje v Gostinstvu, zato še analiza vpliva izobrazbe na plačo v teh dejavnostih po spolu:
-
-#Fin:
-
-ggplot(place_fin, aes(x=Izobrazba, y=Placa, color=Spol))+ geom_point(aes(x=Izobrazba, y=Placa)) + guides(fill=guide_legend("Spol")) + 
-  geom_line()
 
 
 
