@@ -16,16 +16,17 @@ place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_n
 #mutate(Placa=parse_number(as.character(Placa))) %>% group_by(Dejavnost) 
 # summarise(Povprečje=sum(Placa, na.rm = TRUE))
 
+#Uvoz druge tabele za dejavnosti:
+
 stolpci_d <- c("Spol", "Leto", "Dejavnost", "Izobrazba", "Plača")
 place_dejavnosti <- read_csv2("podatki/place_dejavnosti.csv", col_names = stolpci_d, 
                               skip = 2, locale = locale(encoding = "Windows-1250"), na=c("-", "", " "))
 place_dejavnosti$Izobrazba <- NULL
 place_dejavnosti <- place_dejavnosti %>% fill(1:3) %>% drop_na(4)
+place_dejavnosti <- place_dejavnosti[c(3,1,2,4)]
 
 
-place_gos <- place_dejavnost_izobrazba %>% filter(Dejavnost =="K FINANČNE IN ZAVAROVALNIŠKE DEJAVNOSTI" , Leto == 2015)
-place_fin <- place_gos
-
+                                                              
 # podatki/ pred imenom datoteke, ker mamo za directory nastavljen na glavno mapo
 #col_names nastavimo imena stolpcev
 #skip 4 - izpusti prve 4 vrstice
@@ -61,6 +62,7 @@ min_place <- read_html("podatki/minimalne_place.htm") %>% html_node(xpath="//tab
   html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>%
   mutate(placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>% drop_na(3) 
   
+
 names(min_place)[1:3] <- c("Drzava", "Leto", "Placa")
 
 
@@ -103,21 +105,18 @@ names(razlika_plac)[6] <- c("Sprememba plače v %")
 razlika_plac$"Sprememba BDP v %" = (razlika_plac$`BDP v 2015` - razlika_plac$`BDP v 2004`)/razlika_plac$`BDP v 2004` *100
 razlika_plac$`Sprememba v %` <- NULL
 
+maks_razlika_plače <- max(razlika_plac$`Sprememba plače v %`)
+mini_razlika_plače <- min(razlika_plac$`Sprememba plače v %`)
 
-#razlika_plac <- razlika_plac[!(razlika_plac$Drzava=="United States"), ]
-#analiza1 <- analiza1[order(analiza1$Drzava),]
-#g_analiza1 <- ggplot(analiza1, aes(Drzava, Vrednost)) + geom_bar(stat = "identity") + xlab("Podatki") + ylab("Vrednost")
-#print(g_analiza1)
+
 
 
 graf_place <- analiza1 %>% filter(Namen == "Placa" )
-#graf_place <- arrange(graf_place, graf_place$Vrednost)
+
 
 
 graf_bdp <- analiza1 %>% filter(Namen == "BDP") %>% mutate(Vrednost=parse_number(as.character(Vrednost)))
 
-graf_dej15 <- place_dejavnost_izobrazba %>% filter(Leto == 2015)
-graf_dej15$Leto <- NULL
 
 
   
