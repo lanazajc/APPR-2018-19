@@ -7,6 +7,7 @@ output:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
+  runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -41,11 +42,10 @@ Uvozila sem podatke o povprečnih plačah po dejavnostih, izobrazbi in spolu, te
 
 Podatke imam v 4 razpredelnicah v obliki *tidy data*.
 
-1. Povprečna plača po dejavnosti, izobrazbi in spolu
+1. Povprečna bruto plača po dejavnosti, spolu in letu
   - `Dejavnost` - spremenljivka: tip dejavnosti
-  - `Izobrazba` - spremenljivka: Osnovnošolska ali manj, srednješolska, višješolska ali visokošolska
   - `Spol` - spremenljivka: Moški, Ženska
-  - `Leto` - spremenljivka: 2010 od 2015
+  - `Leto` - spremenljivka: 2008 od 2016
   - `Plača` - meritev: Povprečna plača
 
 2. Povprečna plača po regijah in starosti
@@ -64,44 +64,67 @@ Podatke imam v 4 razpredelnicah v obliki *tidy data*.
   - `Leto` - spremenljivka: 2004-2015
   - `BDP` - meritev: BDP
 
-Iz zgoraj omenjenih tabel sem nato kombinirala podatke in iz njih izpeljala tabele, ki so osnova za spodnja grafa: 
+Iz zgoraj omenjenih tabel sem nato kombinirala podatke in iz njih izpeljala tabele, ki so osnova za spodnje analize. 
 
-
-Prvi graf prikazuje višino minimalne plače po državah Evrope za leto 2004 in 2015
-
-```{r graf_place, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(graf_place, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
-  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("Plače za leto 2004 in 2015 po državah")
-```
-
-
-Drugi graf prikazuje vrednosti BDP za posamezne države leta 2004 in 2015
-```{r graf_bdp, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_col(position="dodge") + coord_flip() +
-  guides(fill=guide_legend("Leto")) + xlab("Država") + ggtitle("BDP za leto 2004 in 2015 po državah") 
-
-```
 
 ***
 
 # Analiza in vizualizacija podatkov
 
-```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE,  results='hide'}
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-```{r map, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+Najprej sem analizirala višino povprečne bruto mesečne plače po statistinih regijah Slovenije, in rezultate prikazala v zemljevidu Slovenije. Očitno je, da so najvišje plače v OSrednjeslovenski regiji, kar je pričakovati. Najnižje plače pa so v Notranjsko-Kraški regiji. 
 
+```{r map, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+print(map)
 ```
 
-Uvozila sem tudi zemljevid Slovenije, ki zaenkrat vsebuje le obarvane regije. Vsako regijo bom obarvala glede na višino povprečne plače v 2014 in analizirala v katerih regijah so plače najvišje in kje najnižje. 
 
-V nadaljevanju bom analizirala spremembe v višini plače med letom 2004 in 2015 za države Evrope v povezavi z rastjo BDP posamezne države. 
-Grafično bom prikazala podatke o povprečnih plačah v posamezni dejavnosti ter razlike med plačo moških in žensk v le-teh. 
+V nadaljevanju sem analizirala spremembe v višini minimalne plače med letom 2004 in 2015 za izbrane države Evrope v povezavi z rastjo BDP posamezne države. 
+
+Najprej, sem primerjala višino minimalne plače leta 2004, z letom 2015 in ugotovila,da se je največja sprememba zgodila v Romuniji, kjer je plača narasla za kar 219,7%.
+Najmanjša sprememba plače se je zgodila v Grčiji, kjer je povp. plača narasla za le 8,4%. 
+Podobno sem analizirala rast BDP-ja in ugotovila, da se je največja sprememba BDP zgodila v Turčiji, in sicer porast BDP za kar 145,6% glede na leto 2004, kar je zame precej presenetljiv podatek. Najmajši porast BDP se je zgodil na Portugalskem, in sicer za 21,26%. BDP je v letih 2004-2015 upadel samo v eni izmed izbranih držav, to pa je Grčija, ki je dosegla 7,2% upad BDP glede na leto 2004.
+
+Prvi graf prikazuje višino minimalne plače po državah Evrope za leto 2004 in 2015.
+
+```{r graf1, echo=FALSE, message=FALSE, warning=FALSE}
+print(graf1)
+```
+
+Drugi graf prikazuje vrednosti BDP za posamezne države leta 2004 in 2015
+```{r graf2, echo=FALSE, message=FALSE, warning=FALSE}
+print(graf2)
+```
+
+Če analiziramo podatke o spremembi BDP in min. plače v posamezni državi ugotovimo, da so odstopanja med državami velika. 
+V nekaterih državah, npr. Veliki Britaniji, Belgiji, Španiji, na Portugalskem in Nizozemskem so spremembe minimalnih plač tesno povezane z spremembo BDP-ja, tj. minimalne plače se povečujejo skladno z rastjo BDP. 
+Po drugi strani, v nekaterih državah kot so Romunija, Latvija in Bolgarija so razlike med rastjo BDP in povišanjem minimalnih plač presenetljivo velike, tudi do 150%. 
+Zanimivo pa je, da se nasprotno z mojimi pričakovanj, minimalna plača poveča bolj kot BDP. 
+
+Na spodnjem grafu si lahko pogledamo spremembe v min. plači in BDP-ju za posamezno državo. 
+
+```{r graf3, echo=FALSE, message=FALSE, warning=FALSE}
+print(graf3)
+```
+
+
+
+
 
 ***
 
 # Napredna analiza podatkov
+
+```{r shiny, echo=FALSE, message=FALSE, warning=FALSE}
+shinyAppDir("shiny", options=list(width="100%", height=900))
+```
+
+Za potrebe napredne analize sem analizirala višino plače v posameznih dejavnostih glede na spol. Podatke sem prikazala grafično, glede na leto, ki ga izberemo v Shiny-u. 
+
+Če pobližje pogledamo podatke je očitno, da so tekom let najvišje plače v finančnih in zavarovalniških dejavnostih, najnižje pa v gostnistvu in gradbeništvu. 
 
 
 ***
