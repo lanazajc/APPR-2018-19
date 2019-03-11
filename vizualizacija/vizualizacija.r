@@ -39,11 +39,11 @@ graf2 <- ggplot(graf_bdp, aes(x=Drzava, y=Vrednost, fill=factor(Leto))) + geom_c
 
 
 # Graf razlike v spremembi min. plač in BDP
-graf_sprememb <- razlika_plac[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="Sprememba", value.name = "Odstotek")
+graf_sprememb <- rast[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="Sprememba", value.name = "Odstotek")
 
 graf3 <- ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, fill=factor(Odstotek), col=Sprememba)) +
   guides(fill=guide_legend("Sprememba")) + coord_flip() + ggtitle("Sprememba min. plač in BDP med letoma 2004 in 2015") +
-  geom_point(show.legend=TRUE)
+  geom_point()
 
 
 # GRAF plač po dejavnostih in spolu

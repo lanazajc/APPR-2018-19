@@ -99,14 +99,20 @@ analiza1 <- analiza1[!(analiza1$Drzava=="United States"), ]
 analiza1 <- analiza1 %>% melt(id.vars='Drzava', variable.name=('Placa'), value.name =('Vrednost')) %>%
   separate(Placa, c("Namen", "Leto"), " v ") %>% mutate(Leto=parse_number(as.character(Leto)))
 
-razlika_plac$'Sprememba v %' = (razlika_plac$`Placa v 2015` - razlika_plac$`Placa v 2004`)/razlika_plac$`Placa v 2004` *100
-razlika_plac$Sprememba <- NULL
-names(razlika_plac)[6] <- c("Sprememba plače v %")
-razlika_plac$"Sprememba BDP v %" = (razlika_plac$`BDP v 2015` - razlika_plac$`BDP v 2004`)/razlika_plac$`BDP v 2004` *100
-razlika_plac$`Sprememba v %` <- NULL
+rast <- inner_join(l2004, l2015, by=c("Drzava")) 
+rast <- rast[!(rast$Drzava=="United States"), ]
+rast$'Sprememba v %' = (rast$`Placa v 2015` - rast$`Placa v 2004`)/rast$`Placa v 2004` *100
+rast$"Sprememba BDP v %" = (rast$`BDP v 2015` - rast$`BDP v 2004`)/rast$`BDP v 2004` *100
+names(rast)[6] <- c("Sprememba place v %")
 
-maks_razlika_plače <- max(razlika_plac$`Sprememba plače v %`)
-mini_razlika_plače <- min(razlika_plac$`Sprememba plače v %`)
+#razlika_plac$'Sprememba v %' = (razlika_plac$`Placa v 2015` - razlika_plac$`Placa v 2004`)/razlika_plac$`Placa v 2004` *100
+#razlika_plac$Sprememba <- NULL
+#names(razlika_plac)[6] <- c("Sprememba plače v %")
+#razlika_plac$"Sprememba BDP v %" = (razlika_plac$`BDP v 2015` - razlika_plac$`BDP v 2004`)/razlika_plac$`BDP v 2004` *100
+#razlika_plac$`Sprememba v %` <- NULL
+
+#maks_razlika_plače <- max(razlika_plac$`Sprememba plače v %`)
+#mini_razlika_plače <- min(razlika_plac$`Sprememba plače v %`)
 
 
 
