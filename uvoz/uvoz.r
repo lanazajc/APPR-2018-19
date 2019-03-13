@@ -1,9 +1,6 @@
-
 # UVOZ 1. TABELE: plače glede gospodarsko dejavnost
 
-
 stolpci <- c("Dejavnost", "Izobrazba", "Spol", 2010:2015)
-
 place_dejavnost_izobrazba <- read_csv2("podatki/dejavnost_izob.csv", 
                                        col_names = stolpci, 
                                        skip=4, na=c("", "-", " "),
@@ -11,10 +8,6 @@ place_dejavnost_izobrazba <- read_csv2("podatki/dejavnost_izob.csv",
 
 place_dejavnost_izobrazba <- place_dejavnost_izobrazba  %>% fill(1:2) %>% drop_na(3) %>%
   melt(id.vars=stolpci[1:3], variable.name="Leto", value.name="Placa")
-  
-  
-#mutate(Placa=parse_number(as.character(Placa))) %>% group_by(Dejavnost) 
-# summarise(Povprečje=sum(Placa, na.rm = TRUE))
 
 #Uvoz druge tabele za dejavnosti:
 
@@ -23,7 +16,12 @@ place_dejavnosti <- read_csv2("podatki/place_dejavnosti.csv", col_names = stolpc
                               skip = 2, locale = locale(encoding = "Windows-1250"), na=c("-", "", " "))
 place_dejavnosti$Izobrazba <- NULL
 place_dejavnosti <- place_dejavnosti %>% fill(1:3) %>% drop_na(4)
-place_dejavnosti <- place_dejavnosti[c(3,1,2,4)]
+place_dejavnosti <- place_dejavnosti[c(3,1,2,4)] 
+
+#separate(place_dejavnosti, col = 1, into = c('Oznaka', 'Dejavnost'), sep = "^[\s]$")
+
+
+#place_dejavnosti = transform(place_dejavnosti, Dejavnost = colsplit(Dejavnost, split = " ", names = c('A', 'B')))
 
 
                                                               
@@ -39,7 +37,6 @@ place_dejavnosti <- place_dejavnosti[c(3,1,2,4)]
 # UVOZ 2. TABELE: Plače po regijah in starosti 2010-2014 
 
 stolpci2 <- c("Regija", "Starost", 2010:2015)
-
 regija_starost <- read_csv2("podatki/regija_leto.csv", col_names = stolpci2, skip=3,
                             n_max=96, na=c(" ", "", "z"), locale=locale(encoding="Windows-1250"))
 
@@ -47,7 +44,7 @@ regija_starost <- read_csv2("podatki/regija_leto.csv", col_names = stolpci2, ski
 
 regija_starost <- regija_starost %>% fill(1) %>% drop_na(2) %>% melt(id.vars=stolpci2[1:2], 
                   variable.name="Leto", value.name = "Placa", na.rm = TRUE) %>%
-  mutate(Leto=parse_number(as.character(Leto)))
+                  mutate(Leto=parse_number(as.character(Leto)))
 #regija_starost <- regija_starost[!(regija_starost$Starost=="65 let ali več"), ]
 #regija_starost <- regija_starost[!(regija_starost$Leto==2015), ]
 
@@ -62,9 +59,7 @@ min_place <- read_html("podatki/minimalne_place.htm") %>% html_node(xpath="//tab
   html_table() %>% melt(id.vars="timegeo", variable.name="leto", value.name="placa") %>%
   mutate(placa=parse_number(placa, na=c(":", ":(z)"), locale=locale(decimal_mark=".", grouping_mark=","))) %>% drop_na(3) 
   
-
 names(min_place)[1:3] <- c("Drzava", "Leto", "Placa")
-
 
 # UVOZ 4. TABELE:  BDP po državah
 
@@ -74,7 +69,6 @@ bdp$neki <- NULL
 bdp$neki2 <- NULL
 bdp <- bdp[c(2,1,3)]
 bdp <- bdp %>% drop_na(3)
-
 
 #Združila tabeli BDP in min_place po Drzavah za vsa leta 2004-2015
 
@@ -114,22 +108,9 @@ names(rast)[6] <- c("Sprememba place v %")
 #maks_razlika_plače <- max(razlika_plac$`Sprememba plače v %`)
 #mini_razlika_plače <- min(razlika_plac$`Sprememba plače v %`)
 
-
-
-
 graf_place <- analiza1 %>% filter(Namen == "Placa" )
-
-
-
 graf_bdp <- analiza1 %>% filter(Namen == "BDP") %>% mutate(Vrednost=parse_number(as.character(Vrednost)))
 
-
-
-  
-#analiza1$Razlika_Place <- ((analiza1[4]-analiza1[2])*100)/analiza1[2]
-#analiza1$Razlika_BDP <- analiza1[5]/analiza1[3]
-
-#names(analiza1)[6:7] <- c("Faktor razlike v plači", "Faktor razlike v BDP")                                   
 
 
 
