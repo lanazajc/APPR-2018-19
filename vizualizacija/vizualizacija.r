@@ -47,8 +47,8 @@ graf3 <- ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, col=Sprememba)) +
 
 # GRAF plač po dejavnostih in spolu
 
-graf4 <- ggplot(place_dejavnosti %>% filter(Leto == 2016), aes(x=Dejavnost, y=Plača, fill=factor(Spol))) + geom_col(position = "dodge") + 
-  guides(fill=guide_legend("Spol")) + coord_flip() + ggtitle("Plače po dejavnostih in spolu v letu 2016")
+graf4 <- ggplot(place_dejavnosti %>% filter(Leto == 2016), aes(x=Oznaka, y=Plača, fill=factor(Spol))) + geom_col(position = "dodge") + 
+  guides(fill=guide_legend("Spol")) + coord_flip() + ggtitle("Plače po dejavnostih in spolu v letu 2016") + xlab('Dejavnost') 
 
 
 
