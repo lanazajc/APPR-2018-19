@@ -17,10 +17,13 @@ place_dejavnosti <- read_csv2("podatki/place_dejavnosti.csv", col_names = stolpc
 place_dejavnosti$Izobrazba <- NULL
 place_dejavnosti <- place_dejavnosti %>% fill(1:3) %>% drop_na(4)
 place_dejavnosti <- place_dejavnosti[c(3,1,2,4)] 
+place_dejavnosti <- separate(place_dejavnosti, col=1, into=c('Oznaka', 'Dejavnost'), sep="(?<=^.)\\s")
 
-#separate(place_dejavnosti, col = 1, into = c('Oznaka', 'Dejavnost'), sep = "^[\s]$")
 
-
+legenda <- place_dejavnosti %>% filter(Leto == 2008 & Spol == 'Moški') 
+legenda$Leto <- NULL
+legenda$Spol <- NULL
+legenda$Plača <- NULL
 #place_dejavnosti = transform(place_dejavnosti, Dejavnost = colsplit(Dejavnost, split = " ", names = c('A', 'B')))
 
 
