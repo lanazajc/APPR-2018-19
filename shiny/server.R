@@ -9,6 +9,7 @@ function(input, output) {
       ylab("Plača") + xlab("Dejavnosti") + coord_flip()
     print(graf_dejavnosti)
   })
-  
+  output$legenda <- renderTable(place_dejavnosti %>%
+                                  select(Oznaka, Dejavnost) %>% unique())
 }
 
