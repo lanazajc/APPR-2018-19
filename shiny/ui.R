@@ -8,7 +8,8 @@ tabPanel("Graf",
          sidebarPanel(
           selectInput("Leto", label = "Izberi leto", 
                        choices = unique(place_dejavnosti$Leto))),
-         mainPanel(plotOutput("graf_dejavnosti")), tableOutput('Legenda'))
+         mainPanel(plotOutput("graf_dejavnosti"),
+                   tableOutput("legenda")))
 
 )
 
