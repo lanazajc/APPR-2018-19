@@ -42,7 +42,7 @@ graf_sprememb <- rast[, c(1, 6, 7)] %>% melt(id.vars="Drzava", variable.name ="S
 
 graf3 <- ggplot(graf_sprememb, aes(x=Drzava, y=Odstotek, col=Sprememba)) +
   guides(fill=guide_legend("Sprememba")) + coord_flip() + ggtitle("Sprememba min. plač in BDP med letoma 2004 in 2015") +
-  geom_point()
+  geom_point() + xlab('Država')
 
 
 # GRAF plač po dejavnostih in spolu
