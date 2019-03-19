@@ -74,7 +74,7 @@ Iz zgoraj omenjenih tabel sem nato kombinirala podatke in iz njih izpeljala tabe
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Najprej sem analizirala višino povprečne bruto mesečne plače po statistinih regijah Slovenije, in rezultate prikazala v zemljevidu Slovenije. Očitno je, da so najvišje plače v OSrednjeslovenski regiji, kar je pričakovati. Najnižje plače pa so v Notranjsko-Kraški regiji. 
+Najprej sem analizirala višino povprečne bruto mesečne plače po statističnih regijah Slovenije, in rezultate prikazala v zemljevidu Slovenije. Očitno je, da so najvišje plače v Osrednjeslovenski regiji, kar je pričakovati. Najnižje plače pa so v Notranjsko-Kraški regiji. 
 
 ```{r map, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 print(map)
@@ -116,11 +116,12 @@ print(graf3)
 source("analiza/analiza.r", encoding="UTF-8")
 ```
 
-Za potrebe napredne analize sem naredila napoved poviševanja minimalne bruto plače v Sloveniji do leta 2020. 
+Za potrebe napredne analize sem naredila napoved povišanja minimalne bruto plače v Sloveniji do leta 2020. Naša napoved pravi, da je v letu 2018 min. bruto plača znašala 928,73€, v letu 2019 pa 963,54€. Med našo napovedjo in realnimi podatki je precejšen odklon, saj je bruto min. plača v 2018 znašala 842,79€, v 2019 pa znaša 886,63€.
 
 ```{r graf_regresija, echo=FALSE, message=FALSE, warning=FALSE}
 print(graf_regresija)
 ```
+
 
 Prav tako sem analizirala višino plače v posameznih dejavnostih glede na spol. Podatke sem prikazala grafično, glede na leto, ki ga izberemo v Shiny-u. 
 
